@@ -1,5 +1,5 @@
 import numpy as np
-from importlib_resources import files
+from importlib_resources import files, as_file
 
 def read():
     """
