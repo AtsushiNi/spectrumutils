@@ -5,12 +5,12 @@ from lmfit.models import GaussianModel, ConstantModel
 from lmfit.lineshapes import gaussian
 
 # ピークの数を自動判別してフィッティング
-def fit(x, y , range):
+def fit(x, y , range, thres=0.1):
     index = np.where((range[0] < x) & (x < range[-1]))
     ydata = y[index]
     xdata = x[index]
 
-    peak_index = peakutils.indexes(ydata, thres=0.1)
+    peak_index = peakutils.indexes(ydata, thres=thres)
 
     peak_num = peak_index.size
     if(peak_num == 0):
