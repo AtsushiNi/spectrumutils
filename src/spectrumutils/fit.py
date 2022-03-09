@@ -61,18 +61,19 @@ def single_fit(x, y, peak_x, width=0.1, target=False):
 
     result = model.fit(ydata, params, x = xdata)
 
+    xarray = np.linspace(xdata[0], xdata[-1], 50)
     gauss = gaussian(
-        xdata,
+        xarray,
         result.best_values['gaussian_amplitude'],
         result.best_values['gaussian_center'],
         result.best_values['gaussian_sigma']
     )
 
     plt.plot(xdata, result.data, 'x', label='data', color='black')
-    plt.plot(xdata, result.best_fit, color='red', label='fitted')
+    plt.plot(xarray, gauss + result.best_values['constant_c'], color='red', label='fitted')
     plt.axhline(result.best_values['constant_c'], color='orange')
     if(target):
-        plt.fill_between(xdata, (gauss + result.best_values['constant_c']), result.best_values['constant_c'], hatch='///', facecolor='None', edgecolor='red')
+        plt.fill_between(xarray, (gauss + result.best_values['constant_c']), result.best_values['constant_c'], hatch='///', facecolor='None', edgecolor='red')
         plt.axvline(peak_x, color='gray', label='x='+str(peak_x))
     plt.legend()
 
@@ -109,26 +110,27 @@ def double_fit(x, y, peak_x, width=0.15, target=False):
 
     result = model.fit(ydata, params, x = xdata)
 
+    xarray = np.linspace(xdata[0], xdata[-1], 50)
     gauss1 = gaussian(
-        xdata,
+        xarray,
         result.best_values['gauss1_amplitude'],
         result.best_values['gauss1_center'],
         result.best_values['gauss1_sigma']
     )
     gauss2 = gaussian(
-        xdata,
+        xarray,
         result.best_values['gauss2_amplitude'],
         result.best_values['gauss2_center'],
         result.best_values['gauss2_sigma']
     )
 
     plt.plot(xdata, result.data, 'x', label='data', color='black')
-    plt.plot(xdata, gauss1 + result.best_values['constant_c'], color='red', label='peak1')
-    plt.plot(xdata, gauss2 + result.best_values['constant_c'], color='orange', label='peak2')
+    plt.plot(xarray, gauss1 + result.best_values['constant_c'], color='red', label='peak1')
+    plt.plot(xarray, gauss2 + result.best_values['constant_c'], color='orange', label='peak2')
     plt.axhline(result.best_values['constant_c'], color='orange')
     if(target):
         plt.axvline(peak_x[0], color='gray', label='x='+str(peak_x[0]))
-        plt.fill_between(xdata, (gauss1 + result.best_values['constant_c']), result.best_values['constant_c'], hatch='///', facecolor='None', edgecolor='red')
+        plt.fill_between(xarray, (gauss1 + result.best_values['constant_c']), result.best_values['constant_c'], hatch='///', facecolor='None', edgecolor='red')
     plt.legend()
 
     return [{
@@ -174,33 +176,34 @@ def triple_fit(x, y, peak_x, width=0.25, target=False):
 
     result = model.fit(ydata, params, x = xdata)
 
+    xarray = np.linspace(xdata[0], xdata[-1], 50)
     gauss1 = gaussian(
-        xdata,
+        xarray,
         result.best_values['gauss1_amplitude'],
         result.best_values['gauss1_center'],
         result.best_values['gauss1_sigma']
     )
     gauss2 = gaussian(
-        xdata,
+        xarray,
         result.best_values['gauss2_amplitude'],
         result.best_values['gauss2_center'],
         result.best_values['gauss2_sigma']
     )
     gauss3 = gaussian(
-        xdata,
+        xarray,
         result.best_values['gauss3_amplitude'],
         result.best_values['gauss3_center'],
         result.best_values['gauss3_sigma']
     )
 
     plt.plot(xdata, result.data, 'x', label='data', color='black')
-    plt.plot(xdata, gauss1 + result.best_values['constant_c'], color='red', label='peak1')
-    plt.plot(xdata, gauss2 + result.best_values['constant_c'], color='orange', label='peak2')
-    plt.plot(xdata, gauss3 + result.best_values['constant_c'], color='limegreen', label='peak3')
+    plt.plot(xarray, gauss1 + result.best_values['constant_c'], color='red', label='peak1')
+    plt.plot(xarray, gauss2 + result.best_values['constant_c'], color='orange', label='peak2')
+    plt.plot(xarray, gauss3 + result.best_values['constant_c'], color='limegreen', label='peak3')
     plt.axhline(result.best_values['constant_c'], color='orange')
     if(target):
         plt.axvline(peak_x[0], color='gray', label='x='+str(peak_x[0]))
-        plt.fill_between(xdata, (gauss1 + result.best_values['constant_c']), result.best_values['constant_c'], hatch='///', facecolor='None', edgecolor='red')
+        plt.fill_between(xarray, (gauss1 + result.best_values['constant_c']), result.best_values['constant_c'], hatch='///', facecolor='None', edgecolor='red')
     plt.legend()
 
     return [{
@@ -256,39 +259,40 @@ def quadruple_fit(x, y, peak_x, width=0.25, target=False):
 
     result = model.fit(ydata, params, x = xdata)
 
+    xarray = np.linspace(xdata[0], xdata[-1], 50)
     gauss1 = gaussian(
-        xdata,
+        xarray,
         result.best_values['gauss1_amplitude'],
         result.best_values['gauss1_center'],
         result.best_values['gauss1_sigma']
     )
     gauss2 = gaussian(
-        xdata,
+        xarray,
         result.best_values['gauss2_amplitude'],
         result.best_values['gauss2_center'],
         result.best_values['gauss2_sigma']
     )
     gauss3 = gaussian(
-        xdata,
+        xarray,
         result.best_values['gauss3_amplitude'],
         result.best_values['gauss3_center'],
         result.best_values['gauss3_sigma']
     )
     gauss4 = gaussian(
-        xdata,
+        xarray,
         result.best_values['gauss4_amplitude'],
         result.best_values['gauss4_center'],
         result.best_values['gauss4_sigma']
     )
 
     plt.plot(xdata, result.data, 'x', label='data', color='black')
-    plt.plot(xdata, gauss1 + result.best_values['constant_c'], color='red', label='peak1')
-    plt.plot(xdata, gauss2 + result.best_values['constant_c'], color='orange', label='peak2')
-    plt.plot(xdata, gauss3 + result.best_values['constant_c'], color='limegreen', label='peak3')
-    plt.plot(xdata, gauss4 + result.best_values['constant_c'], color='yellow', label='peak4')
+    plt.plot(xarray, gauss1 + result.best_values['constant_c'], color='red', label='peak1')
+    plt.plot(xarray, gauss2 + result.best_values['constant_c'], color='orange', label='peak2')
+    plt.plot(xarray, gauss3 + result.best_values['constant_c'], color='limegreen', label='peak3')
+    plt.plot(xarray, gauss4 + result.best_values['constant_c'], color='yellow', label='peak4')
     plt.axhline(result.best_values['constant_c'], color='orange')
     if(target):
-        plt.fill_between(xdata, (gauss1 + result.best_values['constant_c']), result.best_values['constant_c'], hatch='///', facecolor='None', edgecolor='red')
+        plt.fill_between(xarray, (gauss1 + result.best_values['constant_c']), result.best_values['constant_c'], hatch='///', facecolor='None', edgecolor='red')
         plt.axvline(peak_x[0], color='gray', label='x='+str(peak_x[0]))
     plt.legend()
 
