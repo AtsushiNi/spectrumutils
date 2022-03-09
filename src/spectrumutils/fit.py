@@ -10,7 +10,7 @@ def fit(x, y , range):
     ydata = y[index]
     xdata = x[index]
 
-    peak_index = peakutils.indexes(ydata, thres=0.5)
+    peak_index = peakutils.indexes(ydata, thres=0.1)
 
     peak_num = peak_index.size
     if(peak_num == 0):
