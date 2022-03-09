@@ -14,7 +14,7 @@ def fit(x, y , range, thres=0.1):
 
     peak_num = peak_index.size
     if(peak_num == 0):
-        raise Error('could not find any peak')
+        raise Exception('could not find any peak')
     peak_x = xdata[peak_index]
     width = xdata[-1] - xdata[0]
     if(peak_num == 1):
@@ -26,7 +26,7 @@ def fit(x, y , range, thres=0.1):
     elif(peak_num == 4):
         return quadruple_fit(xdata, ydata, peak_x, width=width)
     else:
-        raise Error('wrong peak number')
+        raise Exception('wrong peak number')
 
 def single_peak_fit(x, y, peak_x, width=0.1):
     result = single_fit(x, y, peak_x, width=width, target=True)
