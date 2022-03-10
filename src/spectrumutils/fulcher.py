@@ -1,5 +1,42 @@
 import numpy as np
 from importlib_resources import files, as_file
+import xarray as xr
+import matplotlib.pyplot as plt
+
+# 発光強度データからボルツマンプロットを作成
+def boltzmannplot(data, v):
+    # 振動準位ごとに
+    result = []
+    for (d, dv) in zip(data, v):
+        index = np.nonzero(d)
+        N_numbers = index[0]+1
+        amplitudes = d[index]
+
+        population = np.zeros(amplitudes.size)
+        rot_energy = E_d_rot(dv, N_numbers)
+
+        for j, N in enumerate(N_numbers):
+            population[j] = amplitudes[j] * fulcher_wavelength().sel(dv=dv,dN=N) **4 / (2*N+1)/ g_as(N)
+
+        plt.plot(rot_energy, population, '--x')
+        plt.yscale('log')
+        plt.xlabel('Rotational Energy (eV)')
+        plt.ylabel('population (a.u.)')
+
+        result.append({
+            'N_numbers': N_numbers,
+            'rotation_energies': rot_energy,
+            'population': population
+        })
+
+    return result
+
+# fulcher-aの波長データ
+def fulcher_wavelength():
+    franck_condon = files('src.spectrumutils.data.fulcher').joinpath('fulcher_wavelength.nc')
+    with as_file(franck_condon) as f:
+        r = xr.open_dataarray(f)
+    return r
 
 # Franck-Condin因子(https://inis.iaea.org/collection/NCLCollectionStore/_Public/37/088/37088524.pdf)
 def franck_condon_X_to_d():
