@@ -33,20 +33,20 @@ def boltzmannplot(data, v):
 
 # fulcher-aの波長データ
 def fulcher_wavelength():
-    franck_condon = files('src.spectrumutils.data.fulcher').joinpath('fulcher_wavelength.nc')
+    franck_condon = files('spectrumutils.data.fulcher').joinpath('fulcher_wavelength.nc')
     with as_file(franck_condon) as f:
         r = xr.open_dataarray(f)
     return r
 
 # Franck-Condin因子(https://inis.iaea.org/collection/NCLCollectionStore/_Public/37/088/37088524.pdf)
 def franck_condon_X_to_d():
-    franck_condon = files('src.spectrumutils.data.fulcher').joinpath('franck_condon_factor.txt')
+    franck_condon = files('spectrumutils.data.fulcher').joinpath('franck_condon_factor.txt')
     with as_file(franck_condon) as f:
         r = np.loadtxt(f)
     return r
 
 def franck_condon_d_to_a():
-    franck_condon = files('src.spectrumutils.data.fulcher').joinpath('franck_condon_factor_d-to-a.csv')
+    franck_condon = files('spectrumutils.data.fulcher').joinpath('franck_condon_factor_d-to-a.csv')
     with as_file(franck_condon) as f:
         r = np.loadtxt(f, delimiter=',')
     return r
