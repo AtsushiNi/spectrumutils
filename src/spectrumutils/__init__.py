@@ -1,1 +1,1 @@
-from . import fit, fulcher
+from . import fit, fulcher, spectrum

@@ -2,6 +2,86 @@ import numpy as np
 from importlib_resources import files, as_file
 import xarray as xr
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+
+# スペクトルを表示する
+def show(wavelength, spectrum, v=[0]):
+    max = np.max(spectrum)
+
+    pg_data = [
+        go.Scatter(x=wavelength, y=spectrum)
+    ]
+    fig = go.Figure(data=pg_data)
+
+    for V in v:
+        for line in fulcher_wavelength().sel(dv=V).values:
+            if line != 0:
+                fig.add_shape(
+                    type='line',
+                    x0=line,y0=0,x1=line,y1=max*1.1,
+                    line=dict(width=1, color='gray')
+                )
+    fig.update_layout(template='plotly_white')
+    fig.show()
+
+# Q1を使ってざっくり波長校正
+# borderにはQ1を検出する範囲を指定(v=0,1,2...)
+def calibrate_by_Q1(pixel, spectrum, border):
+    Q1_pixels = []
+    Q1_spectrum = []
+    for i in np.arange(len(border)-1):
+        index = np.where((border[i] < pixel) & (pixel < border[i+1]))
+        pixel_range = pixel[index]
+        spectrum_range = spectrum[index]
+        Q_index = np.argmax(spectrum_range)
+        Q1_pixels.append(pixel_range[Q_index])
+        Q1_spectrum.append(spectrum_range[Q_index])
+
+    Q1_pixels = np.array(Q1_pixels)
+    Q1_wavelengths = fulcher_wavelength().sel(dv=slice(0,Q1_pixels.size-1), dN=1).values
+
+    fit = np.poly1d(np.polyfit(Q1_pixels, Q1_wavelengths, 1))
+    plt.plot(fit(pixel), spectrum, color='black')
+    plt.plot(fit(Q1_pixels), Q1_spectrum, 'oC1')
+
+    return fit(pixel)
+
+# 発光線を特定。波長のズレを得る
+def detect_lines(wavelength, spectrum, lines, width=0.1):
+    plt.figure(figsize=(16,8))
+    plt.subplots_adjust(wspace=0.3, hspace=0.5)
+    line_num = sum([np.array(a).size for a in lines])
+    fulcher_wdata = fulcher_wavelength()
+    i=0
+    peak_wavelength = []
+    target_wavelength = []
+    for v, Ns in enumerate(lines):
+        for N in Ns:
+            target_w = fulcher_wdata.sel(dv=v, dN=N).values
+            target_index = np.where((target_w-width<wavelength)&(wavelength<target_w+width))
+            display_index = np.where((target_w-0.2<wavelength)&(wavelength<target_w+0.2))
+            peak_index = np.argmax(spectrum[target_index])
+            peak_w = wavelength[target_index][peak_index]
+            peak_s = spectrum[target_index][peak_index]
+            i += 1
+            plt.subplot(line_num//4+1, 4, i)
+            plt.plot(wavelength, spectrum, color='black')
+            plt.axvline(target_w, color='red')
+            plt.axvline(target_w-width, color='C0')
+            plt.axvline(target_w+width, color='C0')
+            plt.plot(peak_w, peak_s, 'xC1')
+            plt.xlim(target_w-0.2, target_w+0.2)
+            plt.ylim(0, np.max(spectrum[target_index])*1.1)
+            plt.title('v='+str(v)+', N='+str(N))
+
+            peak_wavelength.append(peak_w)
+            target_wavelength.append(target_w)
+
+    return np.array(peak_wavelength), np.array(target_wavelength)
+
+# 各発光線を使って精確に波長校正
+def calibrate(wavelength, spectrum, lines, width=0.1):
+    return 0
 
 # 発光強度データからボルツマンプロットを作成
 def boltzmannplot(data, v):
