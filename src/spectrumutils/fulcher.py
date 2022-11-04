@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 
 # スペクトルを表示する
 def show(wavelengths, spectra, labels=[], v=[0]):
-    max = np.max(spectra.flatten())
+    max = np.max(np.array(spectra).flatten())
 
     pg_data = [
         go.Scatter(x=wavelength, y=spectrum, name=label)
