@@ -5,7 +5,11 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
 # スペクトルを表示する
-def show(wavelengths, spectra, labels=[], v=[0]):
+# 一つまたは複数のスペクトルを表示
+def show(wavelengths, spectra, labels=[""], v=[0]):
+    if(len(spectra) > 40): # 一つのスペクトルを表示する場合
+        wavelengths = [wavelengths]
+        spectra = [spectra]
     max = np.max(np.array(spectra).flatten())
 
     pg_data = [
