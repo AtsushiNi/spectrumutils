@@ -5,11 +5,12 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
 # スペクトルを表示する
-def show(wavelength, spectrum, v=[0]):
-    max = np.max(spectrum)
+def show(wavelengths, spectra, labels=[], v=[0]):
+    max = np.max(spectra.flatten())
 
     pg_data = [
-        go.Scatter(x=wavelength, y=spectrum)
+        go.Scatter(x=wavelength, y=spectrum, name=label)
+        for wavelength, spectrum, label in zip(wavelengths, spectra, labels)
     ]
     fig = go.Figure(data=pg_data)
 
