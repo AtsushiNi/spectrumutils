@@ -79,6 +79,7 @@ def single_fit(x, y, peak_x, width=0.1, target=False):
 
     return [{
         'amplitude': result.best_values['gaussian_amplitude'],
+        'amplitude_error': np.sqrt(np.diag(result.covar))[0],
         'center': result.best_values['gaussian_center'],
         'sigma': result.best_values['gaussian_sigma'],
         'base': result.best_values['constant_c']
@@ -135,12 +136,14 @@ def double_fit(x, y, peak_x, width=0.15, target=False):
 
     return [{
         'amplitude': result.best_values['gauss1_amplitude'],
+        'amplitude_error': np.sqrt(np.diag(result.covar))[0],
         'center': result.best_values['gauss1_center'],
         'sigma': result.best_values['gauss1_sigma'],
         'base': result.best_values['constant_c']
     },
     {
         'amplitude': result.best_values['gauss2_amplitude'],
+        'amplitude_error': np.sqrt(np.diag(result.covar))[3],
         'center': result.best_values['gauss2_center'],
         'sigma': result.best_values['gauss2_sigma'],
         'base': result.best_values['constant_c']
@@ -208,18 +211,21 @@ def triple_fit(x, y, peak_x, width=0.25, target=False):
 
     return [{
         'amplitude': result.best_values['gauss1_amplitude'],
+        'amplitude_error': np.sqrt(np.diag(result.covar))[0],
         'center': result.best_values['gauss1_center'],
         'sigma': result.best_values['gauss1_sigma'],
         'base': result.best_values['constant_c']
     },
     {
         'amplitude': result.best_values['gauss2_amplitude'],
+        'amplitude_error': np.sqrt(np.diag(result.covar))[3],
         'center': result.best_values['gauss2_center'],
         'sigma': result.best_values['gauss2_sigma'],
         'base': result.best_values['constant_c']
     },
     {
         'amplitude': result.best_values['gauss3_amplitude'],
+        'amplitude_error': np.sqrt(np.diag(result.covar))[6],
         'center': result.best_values['gauss3_center'],
         'sigma': result.best_values['gauss3_sigma'],
         'base': result.best_values['constant_c']
@@ -298,24 +304,28 @@ def quadruple_fit(x, y, peak_x, width=0.25, target=False):
 
     return [{
         'amplitude': result.best_values['gauss1_amplitude'],
+        'amplitude_error': np.sqrt(np.diag(result.covar))[0],
         'center': result.best_values['gauss1_center'],
         'sigma': result.best_values['gauss1_sigma'],
         'base': result.best_values['constant_c']
     },
     {
         'amplitude': result.best_values['gauss2_amplitude'],
+        'amplitude_error': np.sqrt(np.diag(result.covar))[3],
         'center': result.best_values['gauss2_center'],
         'sigma': result.best_values['gauss2_sigma'],
         'base': result.best_values['constant_c']
     },
     {
         'amplitude': result.best_values['gauss3_amplitude'],
+        'amplitude_error': np.sqrt(np.diag(result.covar))[6],
         'center': result.best_values['gauss3_center'],
         'sigma': result.best_values['gauss3_sigma'],
         'base': result.best_values['constant_c']
     },
     {
         'amplitude': result.best_values['gauss4_amplitude'],
+        'amplitude_error': np.sqrt(np.diag(result.covar))[9],
         'center': result.best_values['gauss4_center'],
         'sigma': result.best_values['gauss4_sigma'],
         'base': result.best_values['constant_c']
