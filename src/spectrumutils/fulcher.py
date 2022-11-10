@@ -132,12 +132,12 @@ def fulcher_wavelength_npy(dv=None, dN=None):
     with as_file(data) as f:
         r = np.load(f)
 
-    if((dv is not None) and (dN is not None)):
+    if((dv is None) and (dN is None)):
         return r
 
-    if(dN is not None):
+    if(dN is None):
         return r[dv]
-    if(dv is not None):
+    if(dv is None):
         return r.T[dN-1]
 
     return r[dv][dN-1]
