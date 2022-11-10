@@ -110,7 +110,7 @@ def boltzmannplot(data, v, errors=None):
         if(errors is None):
             plt.plot(rot_energy, population, '--x')
         else:
-            plt.errorbar(rot_energy, population, yerr=error[i])
+            plt.errorbar(rot_energy, population, yerr=errors[i])
         plt.yscale('log')
         plt.xlabel('Rotational Energy (eV)')
         plt.ylabel('population (a.u.)')
