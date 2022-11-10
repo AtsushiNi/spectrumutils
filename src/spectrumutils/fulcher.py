@@ -18,14 +18,18 @@ def show(wavelengths, spectra, labels=[""], v=[0]):
     ]
     fig = go.Figure(data=pg_data)
 
+    wavelength_data = fulcher_wavelength_npy()
     for V in v:
-        for line in fulcher_wavelength_npy().sel(dv=V):
-            if line != 0:
-                fig.add_shape(
-                    type='line',
-                    x0=line,y0=0,x1=line,y1=max*1.1,
-                    line=dict(width=1, color='gray')
-                )
+        for vv,lines in enumerate(wavelength_data):
+            if vv != V:
+                continue
+            for line in lines:
+                if line != 0:
+                    fig.add_shape(
+                        type='line',
+                        x0=line,y0=0,x1=line,y1=max*1.1,
+                        line=dict(width=1, color='gray')
+                    )
     fig.update_layout(template='plotly_white')
     fig.show()
 
