@@ -127,11 +127,20 @@ def fulcher_wavelength():
         r = xr.open_dataarray(f)
     return r
 
-def fulcher_wavelength_npy():
+def fulcher_wavelength_npy(dv, dN):
     data = files("spectrumutils.data.fulcher").joinpath("fulcher_wavelength.npy")
     with as_file(data) as f:
         r = np.load(f)
-    return r
+
+    if(!dv && !dN):
+        return r
+
+    if(!dN):
+        return r[dv]
+    if(!dv):
+        return r.T[dN-1]
+
+    return r[dv][dN-1]
 
 # Franck-Condin因子(https://inis.iaea.org/collection/NCLCollectionStore/_Public/37/088/37088524.pdf)
 def franck_condon_X_to_d():
