@@ -127,17 +127,17 @@ def fulcher_wavelength():
         r = xr.open_dataarray(f)
     return r
 
-def fulcher_wavelength_npy(dv, dN):
+def fulcher_wavelength_npy(dv=None, dN=None):
     data = files("spectrumutils.data.fulcher").joinpath("fulcher_wavelength.npy")
     with as_file(data) as f:
         r = np.load(f)
 
-    if(!dv && !dN):
+    if((not dv) and (not dN)):
         return r
 
-    if(!dN):
+    if(not dN):
         return r[dv]
-    if(!dv):
+    if(not dv):
         return r.T[dN-1]
 
     return r[dv][dN-1]
