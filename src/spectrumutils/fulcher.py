@@ -93,10 +93,10 @@ def calibrate(wavelength, spectrum, lines, width=0.1):
     return 0
 
 # 発光強度データからボルツマンプロットを作成
-def boltzmannplot(data, v):
+def boltzmannplot(data, v, errors=None):
     # 振動準位ごとに
     result = []
-    for (d, dv) in zip(data, v):
+    for i, (d, dv) in enumerate(zip(data, v)):
         index = np.nonzero(d)
         N_numbers = index[0]+1
         amplitudes = d[index]
@@ -107,7 +107,10 @@ def boltzmannplot(data, v):
         for j, N in enumerate(N_numbers):
             population[j] = amplitudes[j] * fulcher_wavelength().sel(dv=dv,dN=N) **4 / (2*N+1)/ g_as(N)
 
-        plt.plot(rot_energy, population, '--x')
+        if(errors is None):
+            plt.plot(rot_energy, population, '--x')
+        else:
+            plt.errorbar(rot_energy, population, yerr=error[i])
         plt.yscale('log')
         plt.xlabel('Rotational Energy (eV)')
         plt.ylabel('population (a.u.)')
