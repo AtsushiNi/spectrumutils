@@ -19,7 +19,7 @@ def show(wavelengths, spectra, labels=[""], v=[0]):
     fig = go.Figure(data=pg_data)
 
     for V in v:
-        for line in fulcher_wavelength().sel(dv=V).values:
+        for line in fulcher_wavelength_npy().sel(dv=V):
             if line != 0:
                 fig.add_shape(
                     type='line',
@@ -121,6 +121,12 @@ def fulcher_wavelength():
     franck_condon = files('spectrumutils.data.fulcher').joinpath('fulcher_wavelength.nc')
     with as_file(franck_condon) as f:
         r = xr.open_dataarray(f)
+    return r
+
+def fulcher_wavelength_npy():
+    data = files("spectrumutils.data.fulcher").joinpath("fulcher_wavelength.npy")
+    with as_file(data) as f:
+        r = np.load(f)
     return r
 
 # Franck-Condin因子(https://inis.iaea.org/collection/NCLCollectionStore/_Public/37/088/37088524.pdf)
