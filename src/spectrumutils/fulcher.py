@@ -140,9 +140,7 @@ def boltzmannplot(amplitude_data, v, errors=None):
         if(errors is None):
             plt.plot(rot_energy, population, '--x')
         else:
-            print(np.array([lower_error, upper_error]))
-            plt.errorbar(rot_energy, population, '--x', yerr=np.array([lower_error, upper_error]))
-            plt.plot(rot_energy, population, '--x')
+            plt.errorbar(rot_energy, population, fmt='--x', yerr=np.array([lower_error, upper_error]))
         plt.yscale('log')
         plt.xlabel('Rotational Energy (eV)')
         plt.ylabel('population (a.u.)')
