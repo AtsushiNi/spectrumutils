@@ -124,8 +124,6 @@ def boltzmannplot(amplitude_data, v, errors=None):
     all_population = all_population / max
     all_lower_limit = all_lower_limit / max
     all_upper_limit = all_upper_limit / max
-    print(all_population)
-    print(all_lower_limit)
     all_lower_error = all_population - all_lower_limit
     all_upper_error = all_upper_limit - all_population
 
