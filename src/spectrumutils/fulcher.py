@@ -121,9 +121,9 @@ def boltzmannplot(amplitude_data, v, errors=None):
 
     # 最大値が1になるように正規化
     max = np.ravel(all_population).max()
-    all_population = all_population / max
-    all_lower_limit = all_lower_limit / max
-    all_upper_limit = all_upper_limit / max
+    # all_population = all_population / max
+    # all_lower_limit = all_lower_limit / max
+    # all_upper_limit = all_upper_limit / max
     all_lower_error = all_population - all_lower_limit
     all_upper_error = all_upper_limit - all_population
 
@@ -137,7 +137,7 @@ def boltzmannplot(amplitude_data, v, errors=None):
         if(errors is None):
             plt.plot(rot_energy, population, '--x')
         else:
-            plt.errorbar(rot_energy, population, yerr=[lower_error, upper_error])
+            plt.errorbar(rot_energy, population, '--x', yerr=[lower_error, upper_error])
         plt.yscale('log')
         plt.xlabel('Rotational Energy (eV)')
         plt.ylabel('population (a.u.)')
