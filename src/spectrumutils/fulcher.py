@@ -148,7 +148,8 @@ def boltzmannplot(amplitude_data, v, errors=None):
         result.append({
             'N_numbers': N_numbers,
             'rotation_energies': rot_energy,
-            'population': population
+            'population': population,
+            'errors': np.array([lower_error, upper_error])
         })
 
     return result
