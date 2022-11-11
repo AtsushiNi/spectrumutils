@@ -96,10 +96,13 @@ def calibrate(wavelength, spectrum, lines, width=0.1):
 def boltzmannplot(amplitude_data, v, errors=None):
     # 振動準位ごとにポピュレーションを計算
     all_population = []
-    for (d, dv) in zip(amplitude_data, v):
+    all_lower_limit = []
+    all_upper_limit = []
+    for (d, dv, e) in zip(amplitude_data, v, errors):
         index = np.nonzero(d)
         N_numbers = index[0]+1
         amplitudes = d[index]
+        error = e[index]
 
         population = np.zeros(amplitudes.size)
 
@@ -107,9 +110,20 @@ def boltzmannplot(amplitude_data, v, errors=None):
             population[j] = amplitudes[j] * fulcher_wavelength().sel(dv=dv,dN=N) **4 / (2*N+1)/ g_as(N)
         all_population.append(population)
 
+        if(errors is not None):
+            lower_limit = np.zeros(amplitudes.size)
+            upper_limit = np.zeros(amplitudes.size)
+            for j, N in enumerate(N_numbers):
+                lower_limit[j] = (amplitudes[j] - error[j]) * fulcher_wavelength().sel(dv=dv,dN=N) **4 / (2*N+1)/ g_as(N)
+                upper_limit[j] = (amplitudes[j] + error[j]) * fulcher_wavelength().sel(dv=dv,dN=N) **4 / (2*N+1)/ g_as(N)
+            all_lower_limit.append(lower_limit)
+            all_upper_limit.append(upper_limit)
+
     # 最大値が1になるように正規化
     max = np.ravel(all_population).max()
     all_population = all_population / max
+    all_lower_limit = all_lower_limit / max
+    all_upper_limit = all_upper_limit / max
 
     # グラフをプロット
     result = []
@@ -121,7 +135,7 @@ def boltzmannplot(amplitude_data, v, errors=None):
         if(errors is None):
             plt.plot(rot_energy, population, '--x')
         else:
-            plt.errorbar(rot_energy, population)
+            plt.errorbar(rot_energy, population, yerr=[all_lower_limit, all_upper_limit])
         plt.yscale('log')
         plt.xlabel('Rotational Energy (eV)')
         plt.ylabel('population (a.u.)')
