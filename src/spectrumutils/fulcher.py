@@ -94,6 +94,9 @@ def calibrate(wavelength, spectrum, lines, width=0.1):
 
 # 発光強度データからボルツマンプロットを作成
 def boltzmannplot(amplitude_data, v, errors=None):
+    if (errors is None):
+        errors = np.zeros((np.shape(amplitude_data)))
+
     # 振動準位ごとにポピュレーションを計算
     all_population = []
     all_lower_limit = []
@@ -110,14 +113,14 @@ def boltzmannplot(amplitude_data, v, errors=None):
             population[j] = amplitudes[j] * fulcher_wavelength().sel(dv=dv,dN=N) **4 / (2*N+1)/ g_as(N)
         all_population.append(population)
 
-        if(errors is not None):
-            lower_limit = np.zeros(amplitudes.size)
-            upper_limit = np.zeros(amplitudes.size)
-            for j, N in enumerate(N_numbers):
-                lower_limit[j] = (amplitudes[j] - error[j]) * fulcher_wavelength().sel(dv=dv,dN=N) **4 / (2*N+1)/ g_as(N)
-                upper_limit[j] = (amplitudes[j] + error[j]) * fulcher_wavelength().sel(dv=dv,dN=N) **4 / (2*N+1)/ g_as(N)
-            all_lower_limit.append(lower_limit)
-            all_upper_limit.append(upper_limit)
+        lower_limit = np.zeros(amplitudes.size)
+        upper_limit = np.zeros(amplitudes.size)
+        for j, N in enumerate(N_numbers):
+            lower_limit[j] = (amplitudes[j] - error[j]) * fulcher_wavelength().sel(dv=dv,dN=N) **4 / (2*N+1)/ g_as(N)
+            upper_limit[j] = (amplitudes[j] + error[j]) * fulcher_wavelength().sel(dv=dv,dN=N) **4 / (2*N+1)/ g_as(N)
+        all_lower_limit.append(lower_limit)
+        all_upper_limit.append(upper_limit)
+
     all_population = np.array(all_population)
     all_lower_limit = np.array(all_lower_limit)
     all_upper_limit = np.array(all_upper_limit)
@@ -137,10 +140,7 @@ def boltzmannplot(amplitude_data, v, errors=None):
         N_numbers = index[0]+1
         rot_energy = E_d_rot(dv, N_numbers)
 
-        if(errors is None):
-            plt.plot(rot_energy, population, '--x')
-        else:
-            plt.errorbar(rot_energy, population, fmt='--x', yerr=np.array([lower_error, upper_error]))
+        plt.errorbar(rot_energy, population, fmt='--x', yerr=np.array([lower_error, upper_error]))
         plt.yscale('log')
         plt.xlabel('Rotational Energy (eV)')
         plt.ylabel('population (a.u.)')
