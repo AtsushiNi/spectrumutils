@@ -118,12 +118,15 @@ def boltzmannplot(amplitude_data, v, errors=None):
                 upper_limit[j] = (amplitudes[j] + error[j]) * fulcher_wavelength().sel(dv=dv,dN=N) **4 / (2*N+1)/ g_as(N)
             all_lower_limit.append(lower_limit)
             all_upper_limit.append(upper_limit)
+    all_population = np.array(all_population)
+    all_lower_limit = np.array(all_lower_limit)
+    all_upper_limit = np.array(all_upper_limit)
 
     # 最大値が1になるように正規化
     max = np.ravel(all_population).max()
-    # all_population = all_population / max
-    # all_lower_limit = all_lower_limit / max
-    # all_upper_limit = all_upper_limit / max
+    all_population = all_population / max
+    all_lower_limit = all_lower_limit / max
+    all_upper_limit = all_upper_limit / max
     all_lower_error = all_population - all_lower_limit
     all_upper_error = all_upper_limit - all_population
 
