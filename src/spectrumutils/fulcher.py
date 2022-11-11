@@ -126,12 +126,12 @@ def boltzmannplot(amplitude_data, v, errors=None):
     all_upper_limit = all_upper_limit / max
     print(all_population)
     print(all_lower_limit)
-    lower_error = all_population - all_lower_limit
-    upper_error = all_upper_limit - all_population
+    all_lower_error = all_population - all_lower_limit
+    all_upper_error = all_upper_limit - all_population
 
     # グラフをプロット
     result = []
-    for (population, dv) in zip(all_population, v):
+    for (population, dv, lower_error, upper_error) in zip(all_population, v, all_lower_error, all_upper_error):
         index = np.nonzero(d)
         N_numbers = index[0]+1
         rot_energy = E_d_rot(dv, N_numbers)
