@@ -126,7 +126,7 @@ def boltzmannplot(amplitude_data, v, errors=None):
     all_upper_limit = np.array(all_upper_limit)
 
     # 最大値が1になるように正規化
-    max = np.ravel(all_population).max()
+    max = np.max([np.max(array) for array in all_population])
     all_population = all_population / max
     all_lower_limit = all_lower_limit / max
     all_upper_limit = all_upper_limit / max
