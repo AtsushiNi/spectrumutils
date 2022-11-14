@@ -135,8 +135,8 @@ def boltzmannplot(amplitude_data, v, errors=None):
 
     # グラフをプロット
     result = []
-    for (population, dv, lower_error, upper_error) in zip(all_population, v, all_lower_error, all_upper_error):
-        index = np.nonzero(d)
+    for (population, dv, lower_error, upper_error, amplitude_with_zero) in zip(all_population, v, all_lower_error, all_upper_error, amplitude_data):
+        index = np.nonzero(amplitude_with_zero)
         N_numbers = index[0]+1
         rot_energy = E_d_rot(dv, N_numbers)
 
