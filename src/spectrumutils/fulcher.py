@@ -10,7 +10,7 @@ def show(wavelengths, spectra, labels=[""], v=[0]):
     if(len(spectra) > 40): # 一つのスペクトルを表示する場合
         wavelengths = [wavelengths]
         spectra = [spectra]
-    max = np.max(np.array(spectra).flatten())
+    max = np.max([np.max(array) in array for spectra])
 
     pg_data = [
         go.Scatter(x=wavelength, y=spectrum, name=label)
