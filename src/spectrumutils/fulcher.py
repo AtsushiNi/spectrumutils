@@ -121,17 +121,13 @@ def boltzmannplot(amplitude_data, v, errors=None):
         all_lower_limit.append(lower_limit)
         all_upper_limit.append(upper_limit)
 
-    all_population = np.array(all_population)
-    all_lower_limit = np.array(all_lower_limit)
-    all_upper_limit = np.array(all_upper_limit)
-
     # 最大値が1になるように正規化
     max = np.max([np.max(array) for array in all_population])
     all_population = all_population / max
     all_lower_limit = all_lower_limit / max
     all_upper_limit = all_upper_limit / max
-    all_lower_error = all_population - all_lower_limit
-    all_upper_error = all_upper_limit - all_population
+    all_lower_error = [a - b for (a, b) in zip(all_population, all_lower_limit)]
+    all_upper_error = [a - b for (a, b) in zip(all_upper_limit, all_population)]
 
     # グラフをプロット
     result = []
