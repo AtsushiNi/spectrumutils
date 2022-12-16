@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 
 # スペクトルを表示する
 # 一つまたは複数のスペクトルを表示
-def show(wavelengths, spectra, labels=[""], v=[0]):
+def show(wavelengths, spectra, labels=[""], v=[0], molecule="H2"):
     if(len(spectra) > 40): # 一つのスペクトルを表示する場合
         wavelengths = [wavelengths]
         spectra = [spectra]
@@ -18,7 +18,10 @@ def show(wavelengths, spectra, labels=[""], v=[0]):
     ]
     fig = go.Figure(data=pg_data)
 
-    wavelength_data = fulcher_wavelength_npy()
+    if(molecule === "H2"):
+        wavelength_data = fulcher_wavelength_npy()
+    elif(molecule === "D2"):
+        wavelength_data = D2_wavelength_npy()
     for V in v:
         for vv,lines in enumerate(wavelength_data):
             if vv != V:
@@ -161,6 +164,21 @@ def fulcher_wavelength():
 
 def fulcher_wavelength_npy(dv=None, dN=None):
     data = files("spectrumutils.data.fulcher").joinpath("fulcher_wavelength.npy")
+    with as_file(data) as f:
+        r = np.load(f)
+
+    if((dv is None) and (dN is None)):
+        return r
+
+    if(dN is None):
+        return r[dv]
+    if(dv is None):
+        return r.T[dN-1]
+
+    return r[dv][dN-1]
+
+def D2_wavelength_npy(dv=None, dN=None):
+    data = files("spectrumutils.data.fulcher").joinpath("D2_wavelength.npy")
     with as_file(data) as f:
         r = np.load(f)
 
