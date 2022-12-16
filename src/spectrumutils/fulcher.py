@@ -18,9 +18,9 @@ def show(wavelengths, spectra, labels=[""], v=[0], molecule="H2"):
     ]
     fig = go.Figure(data=pg_data)
 
-    if(molecule === "H2"):
+    if(molecule == "H2"):
         wavelength_data = fulcher_wavelength_npy()
-    elif(molecule === "D2"):
+    elif(molecule == "D2"):
         wavelength_data = D2_wavelength_npy()
     for V in v:
         for vv,lines in enumerate(wavelength_data):
