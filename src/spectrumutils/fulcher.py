@@ -96,7 +96,7 @@ def calibrate(wavelength, spectrum, lines, width=0.1):
     return 0
 
 # 発光強度データからボルツマンプロットを作成
-def boltzmannplot(amplitude_data, v, errors=None, normalize=True):
+def boltzmannplot(amplitude_data, v, errors=None, normalize=True, plot=True):
     if (errors is None):
         errors = np.zeros((np.shape(amplitude_data)))
 
@@ -141,10 +141,11 @@ def boltzmannplot(amplitude_data, v, errors=None, normalize=True):
         N_numbers = index[0]+1
         rot_energy = E_d_rot(dv, N_numbers)
 
-        plt.errorbar(rot_energy, population, fmt='--x', yerr=np.array([lower_error, upper_error]))
-        plt.yscale('log')
-        plt.xlabel('Rotational Energy (eV)')
-        plt.ylabel('population (a.u.)')
+        if(plot):
+            plt.errorbar(rot_energy, population, fmt='--x', yerr=np.array([lower_error, upper_error]))
+            plt.yscale('log')
+            plt.xlabel('Rotational Energy (eV)')
+            plt.ylabel('population (a.u.)')
 
         result.append({
             'N_numbers': N_numbers,
